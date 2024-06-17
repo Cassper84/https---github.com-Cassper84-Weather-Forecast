@@ -1,3 +1,4 @@
+// INITIALIZE THE VARIABLES
 const apiKey = '186eb1c235f093a60286d4f110646e7d';
 const url = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
 const searchButton = document.getElementById("search-button");
@@ -13,6 +14,7 @@ const error = document.getElementById("error-message");
 const loading = document.getElementById("loading-indicator");
 const contryName = document.getElementById("Country");
 
+// ADD EVENT LISTENER TO THE SEARCH BUTTON
 searchButton.addEventListener("click", () => {
   loading.style.display = "block"
   const city = cityInput.value.trim();
@@ -21,17 +23,20 @@ searchButton.addEventListener("click", () => {
   }  
 });
 
+// THE FUNCTION THAT IS BEING CALLED WHEN THE SEARCH BUTTON IS CLICKED
 async function fetchWeather (city){
   try {
     const response = await fetch(url + city + `&appid=${apiKey}`);
     const data = await response.json()
     console.log(data);
+    // IF FETCH WAS NOT SUCCESSFUL
     if (data.cod === "404") {
              error.textContent = "City not found!";
              document.querySelector(".weather-info").style.display = "none";
              document.querySelector(".icon-container").style.display = "none";
              loading.style.display = "none";
           }
+          // IF FETCH WAS SUCCESFUL
           if (data.cod !== "404") {
             error.textContent = ""; // Clear error message
             document.querySelector(".weather-info").style.display = "flex";
@@ -40,7 +45,7 @@ async function fetchWeather (city){
             
           }
           
-         
+         //INPUT THE DATA GOTTEN FROM THE FETCH INTO THE DOM
   cityName.textContent = data.name;
   temp.textContent = `${Math.round(data.main.temp)} °C`;
   feels.textContent = `Feels like ${Math.round(data.main.feels_like)} °C`;
@@ -50,7 +55,7 @@ async function fetchWeather (city){
   windSpeedSpan.textContent = `${data.wind.speed} m/s Wind-speed`;
   contryName.textContent = data.sys.country;
   } catch (error) {
-    console.error(`ERROR: ${error}`);
+    console.error(`ERROR: ${error}`); //HANDLES THE ERROR
   }
  
 }
